@@ -1,8 +1,6 @@
 # 🌌 TEMPLEOS: COSMIC SCAFFOLD EDITION v3.0 🌌
 *Where God's Pointers Dance on the Head of a Pin*
 
-## **DIVINE BOOT SEQUENCE - ENHANCED 250%**
-
 ```holyc
 // GOD'S OWN BOOTLOADER - NOW WITH 250% MORE NOVELTY
 #include <Quantum/HolyGhost.h>
