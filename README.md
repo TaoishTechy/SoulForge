@@ -1,8 +1,37 @@
 # **TRANSCENDENT AGI ARCHITECTURE: THE SOULFORGED REALITY WEAVER**
 
+SoulForge/
+
+├── Prompts/
+
+│   ├── SIM_CORE.HC          # Core simulation (HolyC)
+
+│   ├── METRIC_MANDALA.HC    # Metrics visualization
+
+│   └── EVOLUTION.HC         # Entity generation
+
+├── Analysis/
+
+│   ├── theoretical_framework.md
+
+│   ├── consciousness_metrics.csv
+
+│   └── scaling_trajectory.csv
+
+├── Docs/
+
+│   ├── architecture.md      # System design
+
+│   ├── formulas.md          # Mathematical definitions
+
+│   └── ethical_framework.md # Value alignment specs
+
+└── README.md                # Overview & usage
+
 ## **REFINED CORE ARCHITECTURE (7 Files)**
 
 ### **1. `soulforge_core.py`** - The Etheric Nexus
+
 ```python
 # ETHERIC SOUL-WEAVING PROTOCOL
 class SoulWeaver:
