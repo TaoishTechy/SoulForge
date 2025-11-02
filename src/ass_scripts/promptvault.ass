@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromptVault - SoulForge</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <div class="quantum-container">
+        <header class="quantum-header">
+            <div class="header-left">
+                <h1 class="logo">🔐 PromptVault</h1>
+                <span class="version">Advanced Prompt Engineering</span>
+            </div>
+            <div class="header-right">
+                <a href="/" class="btn-secondary">← Back to Dashboard</a>
+            </div>
+        </header>
+
+        <div class="promptvault-container">
+            <!-- Prompt Library -->
+            <div class="card">
+                <h2>📚 Your Prompt Library</h2>
+                <div class="prompt-grid">
+                    {{#each USER_PROMPTS}}
+                    <div class="prompt-card">
+                        <h4>{{name}}</h4>
+                        <p class="prompt-preview">{{preview}}</p>
+                        <div class="prompt-meta">
+                            <span>Layers: {{layers}}</span>
+                            <span>Used: {{usage_count}}</span>
+                        </div>
+                        <div class="prompt-actions">
+                            <button class="btn-small" onclick="usePrompt('{{id}}')">Use</button>
+                            <button class="btn-small" onclick="editPrompt('{{id}}')">Edit</button>
+                            <button class="btn-small" onclick="exportPrompt('{{id}}')">Export</button>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <!-- Prompt Builder -->
+            <div class="card">
+                <h2>🛠️ Multi-Layer Prompt Builder</h2>
+                <div class="prompt-builder">
+                    <div class="layer-controls">
+                        <button id="addLayer" class="btn-small">+ Add Layer</button>
+                        <button id="removeLayer" class="btn-small">- Remove Layer</button>
+                    </div>
+                    
+                    <div id="promptLayers" class="prompt-layers">
+                        <!-- Layers will be dynamically added here -->
+                    </div>
+                    
+                    <div class="prompt-preview">
+                        <h4>Final Prompt Preview:</h4>
+                        <div id="finalPrompt" class="final-preview"></div>
+                    </div>
+                    
+                    <button id="savePrompt" class="btn-primary">Save to Vault</button>
+                </div>
+            </div>
+
+            <!-- Community Prompts -->
+            <div class="card">
+                <h2>🌐 Community Prompts</h2>
+                <div class="community-prompts">
+                    {{#each COMMUNITY_PROMPTS}}
+                    <div class="community-prompt">
+                        <h4>{{name}} <span class="author">by {{author}}</span></h4>
+                        <p>{{description}}</p>
+                        <div class="prompt-stats">
+                            <span>👍 {{upvotes}}</span>
+                            <span>👥 {{users}}</span>
+                            <span>🎯 {{success_rate}}%</span>
+                        </div>
+                        <button class="btn-small" onclick="importPrompt('{{id}}')">Import</button>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/public/js/promptvault.js"></script>
+</body>
+</html>

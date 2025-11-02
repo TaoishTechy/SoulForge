@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoulForge Authentication</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>🌌 SoulForge</h1>
+                <p>Alice Side Script Protocol v1.0</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="tab-btn active" onclick="showTab('login')">Login</button>
+                <button class="tab-btn" onclick="showTab('register')">Register</button>
+            </div>
+
+            <div id="loginTab" class="tab-content active">
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginUsername">Username</label>
+                        <input type="text" id="loginUsername" name="username" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="password" required class="form-input">
+                    </div>
+                    <button type="submit" class="btn-primary auth-btn">Quantum Login</button>
+                </form>
+            </div>
+
+            <div id="registerTab" class="tab-content">
+                <form id="registerForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="registerUsername">Username</label>
+                        <input type="text" id="registerUsername" name="username" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" name="password" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email (Optional)</label>
+                        <input type="email" id="registerEmail" name="email" class="form-input">
+                    </div>
+                    <button type="submit" class="btn-primary auth-btn">Create Account</button>
+                </form>
+            </div>
+
+            <div class="auth-footer">
+                <p>Default Admin: <code>admin</code> / <code>passabc123</code></p>
+            </div>
+        </div>
+
+        <div class="quantum-status">
+            <div class="status-item">
+                <span class="status-label">System Coherence</span>
+                <span class="status-value">{{SYSTEM_COHERENCE}}</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Active Entities</span>
+                <span class="status-value">{{ACTIVE_ENTITIES}}</span>
+            </div>
+        </div>
+    </div>
+    <script src="/public/js/script.js"></script>
+</body>
+</html>

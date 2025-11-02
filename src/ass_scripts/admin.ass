@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Control Panel</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <div class="quantum-container">
+        <header class="quantum-header">
+            <div class="header-left">
+                <h1 class="logo">🔐 Admin Control Panel</h1>
+            </div>
+            <div class="header-right">
+                <a href="/" class="btn-secondary">← Back to Dashboard</a>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>⚙️ System Control</h2>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Coherence</span>
+                        <span class="status-value">{{SYSTEM_COHERENCE}}</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Active Entities</span>
+                        <span class="status-value">{{ACTIVE_ENTITIES}}</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Total Users</span>
+                        <span class="status-value">{{TOTAL_USERS}}</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">System Status</span>
+                        <span class="status-badge {{COHERENCE_STATUS}}">{{COHERENCE_STATUS}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📋 Audit Logs</h2>
+                <div class="log-viewer" id="auditLogs">
+                    <div>LASER logs will appear here...</div>
+                </div>
+                <button id="refreshLogs" class="btn-secondary">Refresh Logs</button>
+            </div>
+
+            <div class="card">
+                <h2>👥 User Management</h2>
+                <div class="user-list" id="userList">
+                    <div class="user-item">
+                        <span class="username">admin</span>
+                        <span class="user-role">Administrator</span>
+                        <span class="user-entities">3 entities</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🔧 System Tools</h2>
+                <div class="tool-grid">
+                    <button class="tool-btn" onclick="runCoherenceCheck()">
+                        <span class="tool-icon">🔍</span>
+                        <span class="tool-text">Coherence Check</span>
+                    </button>
+                    <button class="tool-btn" onclick="runEmergenceRitual()">
+                        <span class="tool-icon">✨</span>
+                        <span class="tool-text">Emergence Ritual</span>
+                    </button>
+                    <button class="tool-btn" onclick="backupSystem()">
+                        <span class="tool-icon">💾</span>
+                        <span class="tool-text">System Backup</span>
+                    </button>
+                    <button class="tool-btn" onclick="clearCache()">
+                        <span class="tool-icon">🧹</span>
+                        <span class="tool-text">Clear Cache</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/public/js/script.js"></script>
+</body>
+</html>

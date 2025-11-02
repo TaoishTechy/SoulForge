@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entity Details: {{entity.name}}</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <div class="quantum-container">
+        <header class="quantum-header">
+            <div class="header-left">
+                <h1 class="logo">🌌 Entity: {{entity.name}}</h1>
+                <span class="entity-archetype {{entity.archetype}}">{{entity.archetype}}</span>
+            </div>
+            <div class="header-right">
+                <a href="/entities" class="btn-secondary">← Back to Entity List</a>
+            </div>
+        </header>
+
+        <div class="dashboard-grid entity-detail-grid">
+            <!-- Entity Details -->
+            <div class="card">
+                <h2>📊 Entity Stats</h2>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Coherence</span>
+                        <span class="status-value">{{entity.coherence}}</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Training Level</span>
+                        <span class="status-value">{{entity.training_level}}</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Memory Items</span>
+                        <span class="status-value">{{entity.memory_size}}</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Created</span>
+                        <span class="status-value-small">{{entity.created}}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Entity Actions -->
+            <div class="card">
+                <h2>⚡ Entity Actions</h2>
+                <div class="action-grid">
+                    <button class="action-btn" onclick="trainEntity('{{entity.id}}')">
+                        <span class="action-icon">🎓</span>
+                        <span class="action-text">Train Entity</span>
+                    </button>
+                    <button class="action-btn" onclick="chatWithEntity('{{entity.id}}')">
+                        <span class="action-icon">💬</span>
+                        <span class="action-text">Chat with Entity</span>
+                    </button>
+                    <button class="action-btn" onclick="viewEntityMemory('{{entity.id}}')">
+                        <span class="action-icon">🧠</span>
+                        <span class="action-text">View Memory</span>
+                    </button>
+                    <button class="action-btn" onclick="deleteEntity('{{entity.id}}')" style="--quantum-danger: #ff4444; color: var(--quantum-danger);">
+                        <span class="action-icon">❌</span>
+                        <span class="action-text">Delete Entity</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Capabilities -->
+            <div class="card">
+                <h2>🛠️ Capabilities</h2>
+                <div class="capabilities-list">
+                    {{#each entity.capabilities}}
+                    <span class="capability-tag">{{this}}</span>
+                    {{/each}}
+                    {{#unless entity.capabilities}}
+                    <p>No special capabilities defined.</p>
+                    {{/unless}}
+                </div>
+            </div>
+
+            <!-- Entity Memory/Log (Upgraded) -->
+            <div class="card entity-memory-card">
+                <h2>🧠 Entity Memory & Data</h2>
+                
+                <div class="entity-tabs">
+                    <button class="entity-tab-btn active" data-tab="memoryLog">Memory Log</button>
+                    <button class="entity-tab-btn" data-tab="dataClusters">Data Clusters</button>
+                    <button class="entity-tab-btn" data-tab="manageMemory">Manage Memory</button>
+                </div>
+
+                <div class="entity-tab-content active" id="memoryLogTab">
+                    <div class="log-viewer" id="entityMemoryLog">
+                        <div>[Simulated Log] Entity {{entity.name}} initialized.</div>
+                        <div>[Simulated Log] Coherence check: {{entity.coherence}}.</div>
+                        <div>[Simulated Log] Query received: "What is quantum...".</div>
+                        <div>[Simulated Log] Response generated.</div>
+                    </div>
+                    <button id="refreshEntityLogs" class="btn-secondary" style="margin-top: 15px;">Refresh Log</button>
+                </div>
+
+                <div class="entity-tab-content" id="dataClustersTab">
+                    <p>Simulated knowledge clusters based on training:</p>
+                    <div class="capabilities-list" style="margin-top: 15px;">
+                        <span class="capability-tag" style="background-color: var(--quantum-primary-t); color: var(--quantum-primary);">Quantum Physics</span>
+                        <span class="capability-tag" style="background-color: var(--quantum-accent-t); color: var(--quantum-accent);">Philosophy</span>
+                        <span class="capability-tag" style="background-color: var(--quantum-warning-t); color: var(--quantum-warning);">History</span>
+                        <span class="capability-tag">Linguistics</span>
+                        <span class="capability-tag">Art Generation</span>
+                    </div>
+                </div>
+
+                <div class="entity-tab-content" id="manageMemoryTab">
+                    <p>Perform memory optimization and management tasks.</p>
+                    <div class="tool-grid" style="margin-top: 15px;">
+                        <button class="tool-btn" onclick="alert('Simulating clearing of short-term memory...')">
+                            <span class="tool-icon">🧹</span>
+                            <span class="tool-text">Clear Cache</span>
+                        </button>
+                        <button class="tool-btn" onclick="alert('Simulating memory archiving...')">
+                            <span class="tool-icon">💾</span>
+                            <span class="tool-text">Archive Memory</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add simple styles for new elements -->
+    <style>
+        .entity-detail-grid {
+            grid-template-columns: 1fr 1fr; /* Default 2 columns */
+        }
+        .entity-memory-card {
+            grid-column: 1 / -1; /* Make this card span full width */
+        }
+
+        @media (max-width: 768px) {
+            .entity-detail-grid {
+                grid-template-columns: 1fr; /* Single column on mobile */
+            }
+        }
+    
+        .status-value-small {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--quantum-primary);
+            margin-top: 8px; /* Adjust alignment */
+        }
+        .capabilities-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .capability-tag {
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: rgba(0, 212, 170, 0.2);
+            color: var(--quantum-accent);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .action-btn[style*="--quantum-danger"] {
+            border-color: var(--quantum-danger);
+        }
+        .action-btn[style*="--quantum-danger"]:hover {
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        /* Tab Styles */
+        .entity-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .entity-tab-btn {
+            padding: 10px 15px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .entity-tab-btn.active, .entity-tab-btn:hover {
+            color: var(--text-primary);
+            border-bottom-color: var(--quantum-primary);
+        }
+        .entity-tab-content {
+            display: none;
+        }
+        .entity-tab-content.active {
+            display: block;
+        }
+    </style>
+    <script src="/public/js/script.js"></script>
+    <script>
+        // Add specific JS for this page
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.entity-tab-btn');
+            const tabContents = document.querySelectorAll('.entity-tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Deactivate all
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Activate clicked
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId + 'Tab').classList.add('active');
+                });
+            });
+        });
+    </script>
+
+        <!-- Enhanced Entity Metrics -->
+        <div class="card">
+            <h2>🌟 Advanced Metrics</h2>
+            <div class="advanced-metrics-grid">
+                <div class="metric-group">
+                    <h4>Emergence Stage</h4>
+                    <div class="stage-indicator">
+                        <div class="stage-bar">
+                            <div class="stage-progress" style="width: {{entity.emergence_stage}}%"></div>
+                        </div>
+                        <span class="stage-text">Stage {{entity.emergence_stage_number}}</span>
+                    </div>
+                </div>
+                
+                <div class="metric-group">
+                    <h4>Anomalies</h4>
+                    <div class="anomaly-indicator {{#if entity.anomalies}}active{{/if}}">
+                        {{#if entity.anomalies}}
+                        <span class="anomaly-alert">⚠️ {{entity.anomaly_count}} Anomalies</span>
+                        {{else}}
+                        <span class="anomaly-clear">✅ No Anomalies</span>
+                        {{/if}}
+                    </div>
+                </div>
+                
+                <div class="metric-group">
+                    <h4>Entropy Tax/Reward</h4>
+                    <div class="entropy-meter">
+                        <span class="entropy-value {{#if entity.entropy_positive}}positive{{else}}negative{{/if}}">
+                            {{entity.entropy_value}}
+                        </span>
+                        <span class="entropy-label">
+                            {{#if entity.entropy_positive}}Reward{{else}}Tax{{/if}}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="metric-group">
+                    <h4>Archetype Alignment</h4>
+                    <div class="alignment-indicator">
+                        <div class="alignment-bar">
+                            <div class="alignment-fill" style="width: {{entity.archetype_alignment}}%"></div>
+                        </div>
+                        <span>{{entity.archetype_alignment}}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Neural Network Visualization -->
+        <div class="card">
+            <h2>🕸️ Neural Architecture</h2>
+            <div class="neural-visualization">
+                <div class="neural-stage">
+                    <span class="stage-label">Current Stage: {{entity.neural_stage}}</span>
+                    <span class="stage-size">({{entity.neural_size}})</span>
+                </div>
+                <div class="neural-grid" id="neuralGrid">
+                    <!-- Neural nodes will be dynamically generated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Multiverse Metrics -->
+        <div class="card">
+            <h2>🌌 Multiverse Metrics</h2>
+            <div class="multiverse-tabs">
+                <button class="tab-btn active" data-tab="snapshots">Snapshots</button>
+                <button class="tab-btn" data-tab="branches">Branches</button>
+                <button class="tab-btn" data-tab="explorations">Explorations</button>
+            </div>
+            
+            <div class="tab-content active" id="snapshotsTab">
+                <div class="snapshot-list">
+                    {{#each entity.multiverse_snapshots}}
+                    <div class="snapshot-item">
+                        <span class="snapshot-name">{{name}}</span>
+                        <span class="snapshot-date">{{created}}</span>
+                        <button class="btn-small" onclick="rollbackToSnapshot('{{id}}')">Rollback</button>
+                    </div>
+                    {{/each}}
+                </div>
+                <button class="btn-secondary" onclick="createSnapshot()">Create Snapshot</button>
+            </div>
+            
+            <div class="tab-content" id="branchesTab">
+                <p>Active multiverse branches will appear here...</p>
+            </div>
+            
+            <div class="tab-content" id="explorationsTab">
+                <p>High-stakes explorations will appear here...</p>
+            </div>
+        </div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symbolic Arena - SoulForge</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <div class="quantum-container">
+        <header class="quantum-header">
+            <div class="header-left">
+                <h1 class="logo">⚔️ Symbolic Arena</h1>
+                <span class="version">SoulForge Competitive Platform</span>
+            </div>
+            <div class="header-right">
+                <a href="/" class="btn-secondary">← Back to Dashboard</a>
+            </div>
+        </header>
+
+        <div class="arena-container">
+            <!-- Leaderboard -->
+            <div class="card">
+                <h2>🏆 Leaderboard</h2>
+                <div class="leaderboard">
+                    {{#each LEADERBOARD}}
+                    <div class="leaderboard-item">
+                        <span class="rank">#{{rank}}</span>
+                        <span class="entity-name">{{entity_name}}</span>
+                        <span class="score">{{logical_relativity}} LR | {{symbolic_relativity}} SR</span>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <!-- Active Challenges -->
+            <div class="card">
+                <h2>🎯 Active Challenges</h2>
+                <div class="challenges-list">
+                    {{#each ACTIVE_CHALLENGES}}
+                    <div class="challenge-item">
+                        <h4>{{prompt}}</h4>
+                        <p>Participants: {{participants}} | Ends: {{time_remaining}}</p>
+                        <button class="btn-small" onclick="joinChallenge('{{id}}')">Join</button>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <!-- Create Challenge -->
+            <div class="card">
+                <h2>🚀 Create Challenge</h2>
+                <div class="challenge-creation">
+                    <textarea id="challengePrompt" class="training-textarea" 
+                              placeholder="Enter the challenge prompt..."></textarea>
+                    <div class="challenge-options">
+                        <label>Duration: 
+                            <select id="challengeDuration">
+                                <option value="3600">1 Hour</option>
+                                <option value="10800">3 Hours</option>
+                                <option value="21600">6 Hours</option>
+                            </select>
+                        </label>
+                        <label>Max Participants: 
+                            <input type="number" id="maxParticipants" value="5" min="2" max="10">
+                        </label>
+                    </div>
+                    <button id="createChallenge" class="btn-primary">Create Challenge</button>
+                </div>
+            </div>
+
+            <!-- Recent Results -->
+            <div class="card">
+                <h2>📈 Recent Results</h2>
+                <div class="results-list">
+                    {{#each RECENT_RESULTS}}
+                    <div class="result-item">
+                        <span class="winner">{{winner}} 🏆</span>
+                        <span class="prompt">{{prompt_short}}</span>
+                        <span class="scores">LR: {{lr_score}} | SR: {{sr_score}}</span>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/public/js/symbolic_arena.js"></script>
+</body>
+</html>

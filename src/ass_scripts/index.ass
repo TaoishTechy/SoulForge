@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="coherence" content="{{SYSTEM_COHERENCE}}">
+    <title>SoulForge Dashboard</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <div class="quantum-container">
+        <!-- Header -->
+        <header class="quantum-header">
+            <div class="header-left">
+                <h1 class="logo">🌌 SoulForge</h1>
+                <span class="version">Powered By: ASS HTTPd v1.0</span>
+            </div>
+            <div class="header-right">
+                <div class="coherence-badge {{#if SYSTEM_COHERENCE>0.9}}stable{{else}}degraded{{/if}}">
+                    <span class="coherence-label">Coherence</span>
+                    <span class="coherence-value">{{SYSTEM_COHERENCE}}</span>
+                </div>
+                <div class="user-info">
+                    <span class="user-name">{{USER}}</span>
+                    <button id="logoutBtn" class="btn-logout">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        
+        <!-- Navigation -->
+        <nav class="quantum-nav">
+            <a href="/dashboard" class="nav-item active">Dashboard</a>
+            <a href="/entities" class="nav-item">Entities</a>
+            <a href="/training" class="nav-item">Training</a>
+            <a href="/promptvault" class="nav-item">PromptVault</a>
+            <a href="/arena" class="nav-item">Symbolic Arena</a>
+            <a href="/userdash" class="nav-item">User Dashboard</a>
+            {{#if USER=="admin"}}
+            <a href="/admin" class="nav-item admin">Admin</a>
+            {{/if}}
+        </nav>
+
+        <!-- Main Grid -->
+        
+        <!-- Enhanced Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Row 1: System Status & New Widgets -->
+            <div class="card quantum-status">
+                <h2>🔮 SoulForge System Status</h2>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Coherence</span>
+                        <span class="status-value">{{SYSTEM_COHERENCE}}</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Quantum Entropy</span>
+                        <span class="status-value">{{QUANTUM_ENTROPY}}</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Active Entities</span>
+                        <span class="status-value">{{ACTIVE_ENTITIES}}</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Status</span>
+                        <span class="status-badge {{COHERENCE_STATUS}}">{{COHERENCE_STATUS}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Neural Network Metrics Widget -->
+            <div class="card neural-metrics">
+                <h2>🧠 Neural Network</h2>
+                <div class="neural-stats">
+                    <div class="neural-stat">
+                        <span class="neural-label">Size</span>
+                        <span class="neural-value">{{NEURAL_SIZE}}</span>
+                    </div>
+                    <div class="neural-stat">
+                        <span class="neural-label">Qudits</span>
+                        <span class="neural-value">{{NEURAL_QUDITS}}</span>
+                    </div>
+                    <div class="neural-stat">
+                        <span class="neural-label">Qubits</span>
+                        <span class="neural-value">{{NEURAL_QUBITS}}</span>
+                    </div>
+                    <div class="neural-stat">
+                        <span class="neural-label">Coherence</span>
+                        <span class="neural-value">{{QUBIT_COHERENCE}}%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Symbolic Arena Widget -->
+            <div class="card symbolic-arena">
+                <h2>⚔️ Symbolic Arena</h2>
+                <div class="arena-stats">
+                    <div class="arena-stat">
+                        <span class="arena-label">Active Challenges</span>
+                        <span class="arena-value">{{ACTIVE_CHALLENGES}}</span>
+                    </div>
+                    <div class="arena-stat">
+                        <span class="arena-label">Your Rank</span>
+                        <span class="arena-value">#{{USER_RANK}}</span>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="location.href='/arena'">
+                    Enter Arena
+                </button>
+            </div>
+
+            <!-- Row 2: Quick Actions & Enhanced Metrics -->
+            <div class="card quick-actions">
+                <h2>⚡ Quick Actions</h2>
+                <div class="action-grid">
+                    <button class="action-btn" onclick="location.href='/training'">
+                        <span class="action-icon">🎓</span>
+                        <span class="action-text">Train Entity</span>
+                    </button>
+                    <button class="action-btn" onclick="location.href='/promptvault'">
+                        <span class="action-icon">🔐</span>
+                        <span class="action-text">PromptVault</span>
+                    </button>
+                    <button class="action-btn" onclick="showChat()">
+                        <span class="action-icon">💬</span>
+                        <span class="action-text">SoulForge Chat</span>
+                    </button>
+                    <button class="action-btn" onclick="location.href='/arena'">
+                        <span class="action-icon">⚔️</span>
+                        <span class="action-text">Symbolic Arena</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Enhanced Real-time Metrics with Heatmap -->
+            <div class="card quantum-metrics">
+                <h2>📊 Real-time Metrics</h2>
+                <div class="metrics-enhanced">
+                    <div class="metric-row">
+                        <div class="metric-item">
+                            <span class="metric-label">System Uptime</span>
+                            <span class="metric-value" id="uptime">{{SYSTEM_UPTIME}}</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Node Memory</span>
+                            <span class="metric-value" id="memory">{{NODE_MEMORY_USAGE}}%</span>
+                        </div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-item">
+                            <span class="metric-label">Active Sessions</span>
+                            <span class="metric-value" id="sessions">{{ACTIVE_USER_SESSIONS}}</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Training Jobs</span>
+                            <span class="metric-value">{{ACTIVE_TRAINING_JOBS}}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Heatmap Visualization -->
+                    <div class="heatmap-section">
+                        <h4>Neural Activity Heatmap</h4>
+                        <div class="heatmap-grid" id="metricsHeatmap">
+                            {{#each HEATMAP_DATA}}
+                            <div class="heatmap-cell" style="opacity: {{this}}"></div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+                <button id="refreshMetrics" class="btn-secondary">Refresh Metrics</button>
+            </div>
+
+            <!-- Entity Swarm Overview - Enhanced -->
+            <div class="card entity-overview">
+                <h2>👥 Entity Swarm</h2>
+                <div class="entity-mini-list">
+                    {{#each ENTITIES}}
+                    <div class="entity-mini-card" onclick="location.href='/entity/{{id}}'">
+                        <h4>{{name}}</h4>
+                        <p>Coherence: {{coherence}} | Stage: {{emergence_stage}}</p>
+                        <p>Alignment: {{archetype_alignment}}%</p>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card quick-actions">
+                <h2>⚡ Quick Actions</h2>
+                <div class="action-grid">
+                    <button class="action-btn" onclick="location.href='/training'">
+                        <span class="action-icon">🎓</span>
+                        <span class="action-text">Train Entity</span>
+                    </button>
+                    <button class="action-btn" onclick="location.href='/entities'">
+                        <span class="action-icon">👥</span>
+                        <span class="action-text">Manage Entities</span>
+                    </button>
+                    <button class="action-btn" onclick="showChat()">
+                        <span class="action-icon">💬</span>
+                        <span class="action-text">Quantum Chat</span>
+                    </button>
+                    <button class="action-btn" onclick="location.href='/userdash'">
+                        <span class="action-icon">👤</span>
+                        <span class="action-text">User Profile</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Entity Overview -->
+            <div class="card entity-overview">
+                <h2>👥 Entity Swarm Overview</h2>
+                <div class="entity-mini-list">
+                    {{#each ENTITIES}}
+                    <div class="entity-mini-card">
+                        <h4>{{name}}</h4>
+                        <p>Coherence: {{coherence}}</p>
+                        <p>Level: {{training_level}}</p>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <!-- Quantum Metrics -->
+            <div class="card quantum-metrics">
+                <h2>📊 Real-time Metrics</h2>
+                <div id="metricsData" class="metrics-data">
+                    <div class="metric-item">
+                        <span class="metric-label">System Uptime</span>
+                        <span class="metric-value" id="uptime">Loading...</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Memory Usage</span>
+                        <span class="metric-value" id="memory">Loading...</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Active Sessions</span>
+                        <span class="metric-value" id="sessions">Loading...</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Total Entities</span>
+                        <span class="metric-value">{{ACTIVE_ENTITIES}}</span>
+                    </div>
+                </div>
+                <button id="refreshMetrics" class="btn-secondary">Refresh Metrics</button>
+            </div>
+        </div>
+
+        <!-- Chat Modal -->
+        <div id="chatModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>💬 Quantum Chat</h2>
+                <div class="chat-controls">
+                    <select id="entitySelect" class="entity-select">
+                        <option value="">Select Entity...</option>
+                        {{#each ENTITIES}}
+                        <option value="{{id}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div id="chatMessages" class="chat-messages"></div>
+                <div class="chat-input-container">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="Enter your quantum query...">
+                    <button id="sendBtn" class="btn-send">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/public/js/script.js"></script>
+</body>
+</html>

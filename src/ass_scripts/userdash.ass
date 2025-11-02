@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard: {{USER}}</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <div class="quantum-container">
+        <header class="quantum-header">
+            <div class="header-left">
+                <h1 class="logo">👤 User Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <a href="/" class="btn-secondary">← Back to Dashboard</a>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            
+            <!-- User Profile -->
+            <div class="card">
+                <h2>👤 User Profile</h2>
+                <div class="profile-info">
+                    <div class="info-item">
+                        <span class="info-label">Username:</span>
+                        <span class="info-value">{{USER_DATA.username}}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">{{USER_DATA.email}}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Role:</span>
+                        <span class="info-value">{{USER_DATA.role}}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Joined:</span>
+                        <span class="info-value">{{USER_DATA.created}}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Last Login:</span>
+                        <span class="info-value">{{USER_DATA.last_login}}</span>
+                    </div>
+                    {{#if USER_DATA.full}}
+                    <div class="info-item">
+                        <span class="info-label">Bio:</span>
+                        <span class="info-value">{{USER_DATA.full.bio}}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">GitHub:</span>
+                        <span class="info-value">
+                            <a href="{{USER_DATA.git.url}}" target="_blank">{{USER_DATA.git.url}}</a>
+                        </span>
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="card">
+                <h2>User Profile</h2>
+                <div class="profile-info">
+                    <div class="info-item">
+                        <span class="info-label">Username:</span>
+                        <span class="info-value">{{USER_DATA.username}}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">{{USER_DATA.email}}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Role:</span>
+                        <span class="info-value">{{USER_DATA.role}}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Joined:</span>
+                        <span class="info-value">{{USER_DATA.created}}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Last Login:</span>
+                        <span class="info-value">{{USER_DATA.last_login}}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Change Password -->
+            <div class="card">
+                <h2>🔒 Change Password</h2>
+                <form id="changePasswordForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" name="currentPassword" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" name="newPassword" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required class="form-input">
+                    </div>
+                    <button type="submit" class="btn-primary auth-btn">Update Password</button>
+                </form>
+            </div>
+
+            <!-- My Entities -->
+            <div class="card entity-overview">
+                <h2>My Assigned Entities</h2>
+                <div class="entity-mini-list">
+                    {{#each USER_ENTITIES}}
+                    <div class="entity-mini-card">
+                        <h4>{{name}}</h4>
+                        <p>Coherence: {{coherence}}</p>
+                        <p>Level: {{training_level}}</p>
+                        <button class="btn-small" onclick="viewEntityMetrics('{{id}}')">View Details</button>
+                    </div>
+                    {{/each}}
+                    {{#unless USER_ENTITIES}}
+                    <p>You have no entities assigned to you.</p>
+                    {{/unless}}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add simple styles for new elements -->
+    <style>
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .info-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .info-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .auth-form .form-group {
+            margin-bottom: 0;
+        }
+        .entity-mini-card button {
+            margin-top: 10px;
+        }
+    </style>
+    <script src="/public/js/script.js"></script>
+    <script>
+        // Add specific JS for this page if needed
+        document.getElementById('changePasswordForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            
+            if (newPass !== confirmPass) {
+                alert('New passwords do not match!');
+                return;
+            }
+            
+            if (newPass.length < 8) {
+                alert('Password must be at least 8 characters long.');
+                return;
+            }
+            
+            // Simulate API call
+            alert('Password update request sent! (Simulation)');
+            // In a real app, you would send this to the server.
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>

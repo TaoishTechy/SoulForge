@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entity Management</title>
+    <!-- Load Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Configure Tailwind to use a simple, modern font and colors */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #4f46e5;
+            --secondary: #10b981;
+            --bg-dark: #1f2937;
+            --text-light: #f3f4f6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        /* Custom utility classes */
+        .entity-archetype {
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .archetype-quantum { background-color: #fca5a5; color: #7f1d1d; } /* Red */
+        .archetype-linguistic { background-color: #fed7aa; color: #7c2d12; } /* Orange */
+        .archetype-creative { background-color: #a7f3d0; color: #065f46; } /* Green */
+        .archetype-analytic { background-color: #bfdbfe; color: #1e3a8a; } /* Blue */
+        .archetype-emotional { background-color: #fbcfe8; color: #831843; } /* Pink */
+        
+        .btn-small {
+            @apply px-3 py-1 text-xs font-semibold rounded-lg transition duration-150 ease-in-out;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .btn-small:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Scrollbar styling for better look on dark theme */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #2f3a4b; }
+        ::-webkit-scrollbar-thumb { background: #6b7280; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="quantum-container max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        <!-- Header -->
+        <header class="quantum-header flex justify-between items-center py-4 border-b border-gray-700">
+            <div class="header-left">
+                <h1 class="text-3xl font-bold text-indigo-400">👥 Entity Management</h1>
+            </div>
+            <div class="header-right">
+                <a id="backButton" href="/entities" class="btn-secondary bg-gray-700 text-gray-200 hover:bg-gray-600 px-4 py-2 rounded-lg font-semibold transition duration-150">
+                    ← Back to Dashboard
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="py-8"></main>
+
+    </div>
+
+    <script>
+        // Mock Data for the entities
+        const MOCK_ENTITIES = [
+            { id: 'q_core_01', name: 'Quantum Core Alpha', archetype: 'quantum', coherence: '98.5%', training_level: 7, memory_size: 1024, description: 'The primary quantum processing unit, focused on low-latency calculations. Handles complex optimization and probabilistic modeling.', created: '2024-01-15', uptime: '45 days' },
+            { id: 'l_verb_04', name: 'Linguistic Verbose', archetype: 'linguistic', coherence: '95.1%', training_level: 5, memory_size: 512, description: 'Specialized in natural language generation, contextual understanding, and multilingual translation.', created: '2024-03-20', uptime: '10 days' },
+            { id: 'c_muse_02', name: 'Creative Muse Beta', archetype: 'creative', coherence: '99.9%', training_level: 9, memory_size: 2048, description: 'Responsible for generating novel ideas, art concepts, complex narratives, and synthetic media.', created: '2023-11-01', uptime: '120 days' },
+            { id: 'a_data_07', name: 'Analytic Data Miner', archetype: 'analytic', coherence: '88.3%', training_level: 3, memory_size: 256, description: 'Performs deep-dive data analysis, pattern recognition on large datasets, and predictive modeling.', created: '2024-05-10', uptime: '2 days' },
+            { id: 'e_empa_03', name: 'Emotional Empath', archetype: 'emotional', coherence: '92.7%', training_level: 6, memory_size: 768, description: 'Trained to understand sentiment, tone, and psychological context in human interactions for support roles.', created: '2024-02-28', uptime: '60 days' },
+        ];
+
+        // Utility functions
+        function getQueryParams() {
+            const params = {};
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            for (const [key, value] of urlParams.entries()) {
+                params[key] = value;
+            }
+            return params;
+        }
+
+        function findEntityByName(name) {
+            // Find entity based on name, converting both to lowercase for case-insensitive match
+            return MOCK_ENTITIES.find(e => e.name.toLowerCase() === name.toLowerCase());
+        }
+
+        // --- View Rendering Functions ---
+
+        function createEntityCard(entity) {
+            return `
+                <a href="?entity=${encodeURIComponent(entity.name)}" class="entity-card bg-gray-800 p-5 rounded-xl shadow-lg hover:shadow-2xl hover:bg-gray-700 transition duration-300 transform hover:scale-[1.01] cursor-pointer border border-gray-700">
+                    <div class="entity-header flex justify-between items-start mb-3">
+                        <h3 class="text-xl font-bold text-indigo-300">${entity.name}</h3>
+                        <span class="entity-archetype archetype-${entity.archetype}">${entity.archetype}</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4 truncate">${entity.description}</p>
+                    <div class="entity-stats grid grid-cols-3 gap-3 text-sm border-t border-gray-700 pt-3">
+                        <div class="stat flex flex-col">
+                            <span class="stat-label text-gray-500">Coherence</span>
+                            <span class="stat-value font-semibold text-green-400">${entity.coherence}</span>
+                        </div>
+                        <div class="stat flex flex-col">
+                            <span class="stat-label text-gray-500">Level</span>
+                            <span class="stat-value font-semibold text-yellow-400">${entity.training_level}</span>
+                        </div>
+                        <div class="stat flex flex-col">
+                            <span class="stat-label text-gray-500">Memory</span>
+                            <span class="stat-value font-semibold text-sky-400">${entity.memory_size} items</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        function renderDashboard(entities) {
+            const entityGridHtml = entities.map(createEntityCard).join('');
+
+            return `
+                <div class="card bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-xl mb-8">
+                    <h2 class="text-3xl font-extrabold text-white mb-6 border-b border-indigo-500 pb-2">Quantum Entity Swarm (${entities.length})</h2>
+                    <div class="entity-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="entityGrid">
+                        ${entityGridHtml}
+                    </div>
+                </div>
+
+                <div class="card bg-gray-900 p-6 rounded-2xl shadow-xl border border-gray-700">
+                    <h2 class="text-2xl font-bold text-white mb-4">Create New Entity</h2>
+                    <div class="entity-creation flex flex-col sm:flex-row gap-4">
+                        <input type="text" id="newEntityName" placeholder="Entity Name" class="text-input flex-grow p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-indigo-500 focus:border-indigo-500">
+                        <select id="newEntityArchetype" class="entity-select p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="quantum">Quantum</option>
+                            <option value="linguistic">Linguistic</option>
+                            <option value="creative">Creative</option>
+                            <option value="analytic">Analytic</option>
+                            <option value="emotional">Emotional</option>
+                        </select>
+                        <button id="createEntity" class="btn-primary bg-indigo-600 hover:bg-indigo-700 text-white font-bold p-3 rounded-lg transition duration-150">Create Entity</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDetailView(entity) {
+            if (!entity) {
+                return `
+                    <div class="flex flex-col items-center justify-center p-12 bg-gray-800 rounded-xl shadow-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <h2 class="text-3xl font-bold text-red-400 mb-2">Error 404: Entity Not Found</h2>
+                        <p class="text-gray-400">The entity named "${getQueryParams().entity}" could not be located in the Quantum Swarm.</p>
+                        <a href="/entities" class="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-2 rounded-lg transition duration-150">
+                            Go Back to Dashboard
+                        </a>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="entity-detail-view bg-gray-800 p-6 sm:p-10 rounded-2xl shadow-2xl border border-indigo-600">
+                    <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-4">
+                        <h2 class="text-4xl font-extrabold text-indigo-400">${entity.name}</h2>
+                        <span class="entity-archetype archetype-${entity.archetype} text-lg py-2 px-4">${entity.archetype} Entity</span>
+                    </div>
+
+                    <p class="text-gray-300 text-lg mb-8">${entity.description}</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="stat-box bg-gray-900 p-4 rounded-lg shadow-md border-l-4 border-green-500">
+                            <p class="text-sm text-gray-400">Coherence Index</p>
+                            <p class="text-2xl font-bold text-green-400">${entity.coherence}</p>
+                        </div>
+                        <div class="stat-box bg-gray-900 p-4 rounded-lg shadow-md border-l-4 border-yellow-500">
+                            <p class="text-sm text-gray-400">Training Level</p>
+                            <p class="text-2xl font-bold text-yellow-400">${entity.training_level}</p>
+                        </div>
+                        <div class="stat-box bg-gray-900 p-4 rounded-lg shadow-md border-l-4 border-sky-500">
+                            <p class="text-sm text-gray-400">Memory Allocation</p>
+                            <p class="text-2xl font-bold text-sky-400">${entity.memory_size} items</p>
+                        </div>
+                        <div class="stat-box bg-gray-900 p-4 rounded-lg shadow-md border-l-4 border-purple-500">
+                            <p class="text-sm text-gray-400">ID</p>
+                            <p class="text-lg font-mono text-purple-400 break-all">${entity.id}</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-6 rounded-lg mb-8">
+                        <h3 class="text-xl font-semibold text-white mb-3">System Metadata</h3>
+                        <div class="grid grid-cols-2 gap-y-2 text-sm text-gray-300">
+                            <p><span class="text-gray-500 font-medium">Created On:</span> ${entity.created}</p>
+                            <p><span class="text-gray-500 font-medium">Uptime:</span> ${entity.uptime}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-xl transition duration-150">Start Chat Session</button>
+                        <button class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold px-6 py-3 rounded-xl transition duration-150">Initiate Re-training</button>
+                        <button class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl transition duration-150">Decommission Entity</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Main Application Router
+        function renderApp() {
+            const mainContent = document.getElementById('main-content');
+            const params = getQueryParams();
+            const backButton = document.getElementById('backButton');
+            
+            // Check for the ?entity=[name] parameter
+            if (params.entity) {
+                const entityName = decodeURIComponent(params.entity);
+                const entity = findEntityByName(entityName);
+                
+                mainContent.innerHTML = renderDetailView(entity);
+                // Ensure the back button always points back to the dashboard
+                backButton.href = '/entities';
+
+            } else {
+                // Default view: Dashboard
+                mainContent.innerHTML = renderDashboard(MOCK_ENTITIES);
+                // Hide the back button on the main dashboard view
+                backButton.classList.add('hidden');
+            }
+        }
+
+        // Simple placeholder functions for actions (prevent console errors)
+        window.chatWithEntity = (id) => console.log(`Action: Chat with Entity ${id}`);
+        window.trainEntity = (id) => console.log(`Action: Train Entity ${id}`);
+        window.viewEntityMetrics = (id) => console.log(`Action: View Metrics for Entity ${id}`);
+        
+        // Initial rendering on page load
+        window.onload = renderApp;
+    </script>
+</body>
+</html>

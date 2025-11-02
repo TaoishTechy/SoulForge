@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entity Training</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <div class="quantum-container">
+        <header class="quantum-header">
+            <div class="header-left">
+                <h1 class="logo">🎓 Entity Training</h1>
+            </div>
+            <div class="header-right">
+                <a href="/" class="btn-secondary">← Back to Dashboard</a>
+            </div>
+        </header>
+
+        <div class="training-container">
+<div class="card">
+                <h2>Select Entity to Train</h2>
+                <div class="entity-selector">
+                    <select id="trainEntitySelect" class="entity-select">
+                        <option value="">Choose an entity...</option>
+                        {{#each ENTITIES}}
+                        <option value="{{id}}">{{name}} (Coherence: {{coherence}}, Level: {{training_level}})</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+
+<div class="card">
+                <h2>Training Data</h2>
+                <div class="training-input">
+                    <textarea id="trainingData" class="training-textarea" 
+                              placeholder="Enter training data, knowledge, or experiences for the entity..."></textarea>
+                    
+            
+<div class="card">
+                <h2>🛠️ Advanced Training Controls</h2>
+                <div class="training-options-enhanced">
+                    <div class="option-group">
+                        <h4>Training Sources</h4>
+                        <div class="source-options">
+                            <label>
+                                <input type="radio" name="source" value="upload" checked>
+                                File Upload (Max: {{#if USER_DATA.premium}}10MB{{else}}4MB{{/if}})
+                            </label>
+                            <label>
+                                <input type="radio" name="source" value="url">
+                                URL (Reddit/Webserver)
+                            </label>
+                            <label>
+                                <input type="radio" name="source" value="text">
+                                Direct Text Input
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <h4>Content Types</h4>
+                        <div class="content-types">
+                            <label><input type="checkbox" name="content_type" value="text" checked> Text</label>
+                            <label><input type="checkbox" name="content_type" value="json"> JSON</label>
+                            <label><input type="checkbox" name="content_type" value="documents"> Documents</label>
+                            <label><input type="checkbox" name="content_type" value="images"> Images</label>
+                            <label><input type="checkbox" name="content_type" value="gif"> GIF</label>
+                            <label><input type="checkbox" name="content_type" value="video"> Video</label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <h4>Algorithm Optimization</h4>
+                        <select id="algorithmSelect" class="entity-select">
+                            <option value="auto">Auto-Select by Content Type</option>
+                            <option value="text_optimized">Text-Optimized</option>
+                            <option value="multimodal">Multimodal</option>
+                            <option value="quantum_enhanced">Quantum-Enhanced</option>
+                        </select>
+                    </div>
+                    
+                    <div class="option-group">
+                        <h4>External Sources</h4>
+                        <input type="text" id="externalUrl" class="text-input" placeholder="https://reddit.com/r/... or http://localhost:80/...">
+                        <small>Supports Reddit threads/subreddits and unsecure webservers (port 80)</small>
+                    </div>
+                </div>
+            </div>
+                        <label>
+                            <input type="checkbox" id="quantumEnhancement" checked>
+                            Enable Quantum Enhancement
+                        </label>
+                        <label>
+                            <input type="checkbox" id="sentienceBoost">
+                            Apply Sentience Boost
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+          
+<div class="card">
+                <h2>Training Controls</h2>
+                <div class="training-controls">
+                    <button id="startTraining" class="btn-primary">Begin Quantum Training</button>
+                    <button id="stopTraining" class="btn-secondary" disabled>Stop Training</button>
+                </div>
+                <div class="training-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span class="progress-text" id="progressText">Ready to train</span>
+                </div>
+            </div>
+
+            
+            <div class="card">
+                <h2>📈 Training Analysis</h2>
+                <div class="analysis-controls">
+                    <button id="runAnalysis" class="btn-secondary">Run Detailed Analysis</button>
+                    <button id="saveAnalysis" class="btn-secondary">Save Analysis</button>
+                    <select id="saveLocation" class="entity-select">
+                        <option value="account">Save to Account</option>
+                        <option value="local">Save Locally</option>
+                    </select>
+                </div>
+                <div id="analysisResults" class="analysis-results">
+                    <!-- Analysis results will appear here -->
+                </div>
+            </div>
+<div class="card">
+                <h2>Training Results</h2>
+                <div id="trainingResults" class="training-results">
+                    <p>Training results will appear here...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/public/js/script.js"></script>
+</body>
+</html>
