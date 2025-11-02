@@ -1,0 +1,15 @@
+{
+  "admin": {
+    "password_hash": "15e2b0d3c33891ebb0f1ef609ec419420c20e320ce94c65fbc8c3312448eb225",
+    "salt": "f47ac10b58cc4372a5670e02b2c3d479",
+    "email": "admin@quantum-agi.com",
+    "created_at": 1730500000,
+    "entities": [
+      "quantum_01",
+      "ling_01",
+      "creative_01"
+    ],
+    "training_data": [],
+    "feedback_history": []
+  }
+}
